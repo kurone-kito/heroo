@@ -1,230 +1,130 @@
-# 📄 Yarn project boilerplate
+# 📄 PNPM workspaces project template
 
 ## Features
 
-- Yarn with PnP
-- TypeScript
-- ESLint
-- Prettier
-- Visual Studio Code / Vim ready
-- CI / CD configurations
-  - Dependabot
-  - GitHub Actions
+- All features of
+  [kurone-kito/pnpm-project-template](https://github.com/kurone-kito/pnpm-project-template)
+- The workspaces support with [pnpm workspaces](https://pnpm.io/workspaces)
+
+### Workspaces
+
+- `cli`: The boilerplate of the CLI applications
+- `lib`: The boilerplate of the libraries
+- `web-solid`: The boilerplate of the web applications using Solid.js
+
+## How to use this template
+
+You can create a new project by using `degit` or the “Use this template”
+button on GitHub.
+
+```sh
+npx degit kurone-kito/pnpm-workspace-template my-project
+cd my-project
+pnpm install
+```
+
+### Additional configurations
+
+- Update `package.json` fields:
+  - `name`: The name of your project.
+  - `description`: A brief description of your project.
+  - `author`: Your name or organization.
+  - `license`: The license for your project (default is MIT).
+  - `homepage`: The homepage URL for your project.
+  - `repository`: The repository URL for your project.
+  - `bugs`: The URL for reporting issues.
+- Edit or remove `.github/CODEOWNERS` as needed.
+
+### Usecase
+
+When you want to create a non-monorepo project, you should use the
+[pnpm-project-template](https://github.com/kurone-kito/pnpm-project-template).
 
 ## System Requirements
 
-- Node.js Fermium LTS (`^14.21.3`)
-- Yarn (`>=2.4.3`)
+- Node.js: Any of the following versions
+  - Iron LTS (`^20.11.x`)
+  - Jod LTS (`^22.x.x`)
+  - Latest (`>=24.x.x`)
 
-## Install the dependencies
+Note that this template includes `.node-version`, `.nvmrc`, and
+`.tool-versions` files with specific Node.js versions. These files
+currently list `20.19.3`, so update them and this section as needed when
+you start a new project.
 
-```sh
-yarn install
-```
+## Development
 
-## Linting
+### Install the dependencies
 
-```sh
-yarn run lint
-yarn run lint:fix # Lint and auto-fix
-```
-
-## Testing
-
-```sh
-yarn run test
-```
-
-Currently, the command works as an alias for the `yarn run lint` command.
-
-## Cleaning
+Playwright downloads browser binaries during installation. On Linux you must
+install several system libraries beforehand. The following command installs
+the libraries recommended by the official documentation:
 
 ```sh
-yarn run clean
+sudo apt-get update
+sudo apt-get install -y libnss3 libatk-1.0-0 libatk-bridge2.0-0 libcups2 \
+  libdrm2 libx11-xcb1 libxcomposite1 libxdamage1 libxrandr2 libgbm1 libgtk-3-0 \
+  libasound2 libatspi2.0-0 libxshmfence1 libxkbcommon0 libpangocairo-1.0-0
 ```
-
-## Migrate to NPM
-
-### 1. Remove following files
-
-- `.yarn/`
-- `.yarnrc.yml`
-- `yarn.lock`
-
-### 2. Apply the following patches
-
-```diff
---- a/.github/workflows/push.yml
-+++ b/.github/workflows/push.yml
-@@ -13,16 +13,14 @@ jobs:
-       - name: Prepare the Node.js version ${{ matrix.node-version }} environment
-         uses: actions/setup-node@v2
-         with:
--          cache: ${{ !env.ACT && 'yarn' || '' }}
-+          cache: ${{ !env.ACT && 'npm' || '' }}
-           node-version: ${{ matrix.node-version }}
--      - name: Install the Yarn
--        run: npm install --global yarn@berry
-+      - name: set npm config
-+        run: npm config set unsafe-perm true
-       - env:
-           HUSKY: 0
-         name: Install the dependencies
--        run: yarn install --inline-builds
-+        run: npm ci
-       - name: Run the tests
--        run: yarn run test
-+        run: npm test
-     strategy:
-       matrix:
-         node-version:
-```
-
-```diff
---- a/.husky/commit-msg
-+++ b/.husky/commit-msg
-@@ -4,4 +4,4 @@
-
- . "$(dirname "$0")/_/husky.sh"
-
--yarn exec commitlint --edit "${1}"
-+npx --no-install commitlint --edit "${1}"
-```
-
-```diff
---- a/.husky/pre-commit
-+++ b/.husky/pre-commit
-@@ -4,4 +4,4 @@
-
- . "$(dirname "$0")/_/husky.sh"
-
--yarn exec pretty-quick --staged
-+npx --no-install pretty-quick --staged
-```
-
-```diff
---- a/.vim/coc-settings.json
-+++ b/.vim/coc-settings.json
-@@ -1,6 +1,4 @@
- {
--  "eslint.nodePath": ".yarn/sdks",
--  "eslint.packageManager": "yarn",
--  "tsserver.tsdk": ".yarn/sdks/typescript/lib",
-+  "tsserver.tsdk": "node_modules/typescript/lib",
-   "workspace.workspaceFolderCheckCwd": false
- }
-```
-
-```diff
---- a/.vscode/settings.json
-+++ b/.vscode/settings.json
-@@ -1,11 +1,6 @@
- {
--  "eslint.nodePath": ".yarn/sdks",
--  "eslint.packageManager": "yarn",
-   "files.watcherExclude": {
--    "**/.eslintcache": true,
--    "**/.pnp.*": true,
--    "**/.yarn/cache/**": true,
--    "**/.yarn/unplugged/**": true
-+    "**/.eslintcache": true
-   },
-   "json.schemas": [
-     {
-@@ -13,11 +8,6 @@
-       "url": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/packages/cspell-types/cspell.schema.json"
-     }
-   ],
--  "prettier.prettierPath": ".yarn/sdks/prettier/index.js",
--  "search.exclude": {
--    "**/.pnp.*": true,
--    "**/.yarn": true
--  },
-   "typescript.enablePromptUseWorkspaceTsdk": true,
--  "typescript.tsdk": ".yarn/sdks/typescript/lib"
-+  "typescript.tsdk": "node_modules/typescript/lib"
- }
-```
-
-```diff
---- a/cspell.config.yml
-+++ b/cspell.config.yml
-@@ -15,10 +15,8 @@ ignorePaths:
-   - .git/objects
-   - .github/CODE_OF_CONDUCT.*
-   - .vscode
--  - .yarn
-   - cspell.config.yml
-   - node_modules
--  - yarn.lock
- ignoreWords:
-   - kito
-   - kurone
-```
-
-```diff
---- a/package.json
-+++ b/package.json
-@@ -15,15 +15,15 @@
-   "files": [],
-   "scripts": {
-     "clean": "rimraf -g \".eslintcache\" \"*.tgz\" \"*.tsbuildinfo\"",
--    "postinstall": "husky install",
--    "lint": "conc -m 1 \"yarn:lint:*:check\"",
-+    "lint": "conc -m 1 \"npm:lint:*:check\"",
-     "lint:eslint:check": "eslint --cache --cache-strategy=content -f codeframe \"./**/*\"",
--    "lint:eslint:fix": "yarn run lint:eslint:check --fix",
--    "lint:fix": "conc -m 1 \"yarn:lint:*:fix\"",
--    "lint:prettier:check": "yarn run prettier -cu",
--    "lint:prettier:fix": "yarn run prettier -uw",
--    "prettier": "prettier --cache --loglevel=warn \"$@\" \"./**/*\"",
--    "test": "yarn run lint"
-+    "lint:eslint:fix": "npm run lint:eslint:check -- --fix",
-+    "lint:fix": "conc -m 1 \"npm:lint:*:fix\"",
-+    "lint:prettier:check": "npm run prettier -- -cu",
-+    "lint:prettier:fix": "npm run prettier -- -uw",
-+    "prepare": "husky install",
-+    "prettier": "prettier --cache --loglevel=warn \"./**/*\"",
-+    "test": "npm run lint"
-   },
-   "prettier": "@kurone-kito/prettier-config",
-   "devDependencies": {
-@@ -35,7 +35,6 @@
-     "@kurone-kito/typescript-config": "^0.1.2",
-     "@typescript-eslint/eslint-plugin": "^5.56.0",
-     "@typescript-eslint/parser": "^5.56.0",
--    "@yarnpkg/sdks": "^3.0.0-rc.40",
-     "concurrently": "^7.6.0",
-     "eslint": "^8.36.0",
-     "eslint-config-airbnb-typescript": "^17.0.0",
-@@ -60,10 +59,8 @@
-     "typescript": "~5.0.2",
-     "typescript-eslint-language-service": "^5.0.0"
-   },
--  "packageManager": "yarn@3.5.0",
-   "engines": {
--    "node": ">=14.21",
--    "yarn": ">=2.4.3"
-+    "node": ">=14.21"
-   },
-   "publishConfig": {
-     "access": "public"
-```
-
-### 3. Run following command
 
 ```sh
-npm install
-git add -A
-git commit -m "feat: migrate to NPM from Yarn"
+corepack enable
+pnpm install
 ```
 
-## Rules for Development
+#### Configure `BASE_PATH`
 
-Introduce commit message validation at commit time.
-“**[Conventional Commits](https://www.conventionalcommits.org/ja/)**”
-rule is applied to discourage committing messages that violate conventions.
+Set up an `.env` file before building when deploying `packages/web-solid`
+to a subdirectory such as GitHub Pages.
+
+```sh
+cp .env.example .env
+# Edit .env and update BASE_PATH if needed
+```
+
+The default `.env.example` contains the following setting:
+
+```bash
+BASE_PATH=/pnpm-workspace-template
+```
+
+This value should match the subdirectory where the site is hosted.
+
+### Building
+
+```sh
+pnpm run build
+pnpm run dev # Build and watch for changes
+pnpm run build:sea # Build the Single Executable Application(s)
+```
+
+### Linting
+
+```sh
+pnpm run lint
+pnpm run lint:fix # Lint and auto-fix
+```
+
+### Testing
+
+Run `pnpm run build` before executing the test commands.
+
+```sh
+pnpm run test  # Run unit tests
+pnpm run test:e2e  # Run end-to-end tests
+```
+
+### Cleaning
+
+```sh
+pnpm run clean
+```
+
+## Contributing
+
+Welcome to contribute to this repository! For more details,
+please refer to [CONTRIBUTING.md](.github/CONTRIBUTING.md).
 
 ## LICENSE
 
-MIT
+[MIT](./LICENSE)
