@@ -2,3 +2,18 @@
 @import "@kurone-kito/vrc-icons-tw";
 @plugin "tailwindcss-safe-area";
 @plugin "daisyui";
+
+@layer utilities {
+  @keyframes ticker {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  .animate-ticker {
+    animation: ticker linear infinite;
+    animation-duration: calc(var(--animation-duration, 20s) * 3);
+  }
+}
