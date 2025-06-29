@@ -1,15 +1,15 @@
 {
-  "name": "@kurone-kito/pwt-web-solid",
+  "name": "@kurone-kito/heroo-demo",
   "version": "0.1.0",
   "private": true,
   "description": "The SolidJS web app boilerplate",
   "keywords": ["web", "solid.js", "boilerplate", "template"],
-  "homepage": "https://github.com/kurone-kito/pnpm-workspace-template#readme",
-  "bugs": "https://github.com/kurone-kito/pnpm-workspace-template/issues",
+  "homepage": "https://github.com/kurone-kito/heroo#readme",
+  "bugs": "https://github.com/kurone-kito/heroo/issues",
   "repository": {
     "type": "git",
-    "url": "https://github.com/kurone-kito/pnpm-workspace-template.git",
-    "directory": "packages/web-solid"
+    "url": "https://github.com/kurone-kito/heroo.git",
+    "directory": "packages/demo"
   },
   "license": "MIT",
   "author": "kurone-kito <krone@kit.black> (https://kit.black/)",
@@ -26,7 +26,6 @@
     "test:e2e": "playwright test"
   },
   "dependencies": {
-    "@kurone-kito/pwt-lib": "workspace:^",
     "@solidjs/meta": "^0.29.4",
     "@solidjs/router": "^0.15.3",
     "@solidjs/start": "^1.1.5",
@@ -54,7 +53,7 @@
     "vitest": "^3.2.4"
   },
   "engines": {
-    "node": "^20.11 || ^22 || >=24"
+    "node": "^22 || >=24"
   },
   "publishConfig": {
     "access": "public"

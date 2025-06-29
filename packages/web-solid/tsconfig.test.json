@@ -1,5 +1,0 @@
-{
-  "compilerOptions": { "rootDir": "." },
-  "include": ["src/**/*", "*.config.mts"],
-  "extends": "./tsconfig"
-}

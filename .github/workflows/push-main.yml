@@ -14,15 +14,6 @@ on:
 permissions:
   contents: write
 jobs:
-  update_release_draft:
-    permissions:
-      contents: write
-      pull-requests: write
-    runs-on: ubuntu-latest
-    steps:
-      - uses: release-drafter/release-drafter@v6
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   build-website:
     environment:
       name: github-pages
@@ -43,14 +34,14 @@ jobs:
       - name: Post-prepare the Node.js environment
         uses: actions/setup-node@v4
         with:
-          cache: ${{ !env.ACT && 'pnpm' || '' }}
+          cache: pnpm
           node-version-file: .node-version
       - env:
           HUSKY: 0
         name: Install the dependencies
         run: pnpm install --frozen-lockfile --prefer-offline
       - env:
-          BASE_PATH: /pnpm-workspace-template
+          BASE_PATH: /heroo
         name: Run the build process
         run: pnpm run build
       - name: Prepare for GitHub Pages deployment
@@ -60,7 +51,7 @@ jobs:
       - name: Upload to GitHub Pages artifacts
         uses: actions/upload-pages-artifact@v3
         with:
-          path: packages/web-solid/.output/public
+          path: packages/demo/.output/public
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

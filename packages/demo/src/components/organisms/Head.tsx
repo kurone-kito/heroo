@@ -13,7 +13,7 @@ export const Head: Component = () => (
     description="A webapp template of the pnpm workspaces using SolidStart."
     keywords="pnpm, pnpm-workspace, template, webapp, solid-start"
     language="en"
-    siteName="pnpm-workspace-template"
-    url="https://kurone-kito.github.io/pnpm-workspace-template/"
+    siteName="heroo"
+    url="https://kurone-kito.github.io/heroo/"
   />
 );
